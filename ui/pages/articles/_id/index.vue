@@ -18,7 +18,7 @@ export default {
   computed: {
     articleId: {
       get() {
-        return this.$route.params.id;
+        return parseInt(this.$route.params.id);
       },
     },
   },
@@ -29,6 +29,7 @@ export default {
           article_id: this.articleId,
         });
       } catch (err) {
+        console.log(err);
       } finally {
       }
     },
@@ -38,6 +39,7 @@ export default {
           article_id: this.articleId,
         });
       } catch (err) {
+        console.log(err);
       } finally {
       }
     },
