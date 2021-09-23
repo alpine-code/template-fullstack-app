@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1rnuq9q" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
+  <bpmn:process id="article-submitted" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Article Submitted">
+      <bpmn:outgoing>Flow_0tckiti</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0tckiti" sourceRef="StartEvent_1" targetRef="Activity_0lomp11" />
+    <bpmn:sequenceFlow id="Flow_19jpguh" sourceRef="Activity_0lomp11" targetRef="Event_0xn5iw6" />
+    <bpmn:sequenceFlow id="Flow_1yqpaxz" sourceRef="Event_0xn5iw6" targetRef="Activity_1cgjqci" />
+    <bpmn:endEvent id="Event_1legzn4">
+      <bpmn:incoming>Flow_05n0r6e</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_05n0r6e" sourceRef="Activity_1cgjqci" targetRef="Event_1legzn4" />
+    <bpmn:intermediateCatchEvent id="Event_0xn5iw6">
+      <bpmn:incoming>Flow_19jpguh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yqpaxz</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0dnngw8">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:serviceTask id="Activity_0lomp11" name="Thanks Email" camunda:type="external" camunda:topic="node-red-worker-1">
+      <bpmn:incoming>Flow_0tckiti</bpmn:incoming>
+      <bpmn:outgoing>Flow_19jpguh</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1cgjqci" name="node-red-worker-2" camunda:type="external" camunda:topic="node-red-worker-2">
+      <bpmn:incoming>Flow_1yqpaxz</bpmn:incoming>
+      <bpmn:outgoing>Flow_05n0r6e</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="article-submitted">
+      <bpmndi:BPMNEdge id="Flow_0tckiti_di" bpmnElement="Flow_0tckiti">
+        <di:waypoint x="215" y="97" />
+        <di:waypoint x="270" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19jpguh_di" bpmnElement="Flow_19jpguh">
+        <di:waypoint x="370" y="97" />
+        <di:waypoint x="432" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yqpaxz_di" bpmnElement="Flow_1yqpaxz">
+        <di:waypoint x="468" y="97" />
+        <di:waypoint x="530" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05n0r6e_di" bpmnElement="Flow_05n0r6e">
+        <di:waypoint x="630" y="97" />
+        <di:waypoint x="692" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="79" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="155" y="122" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1legzn4_di" bpmnElement="Event_1legzn4">
+        <dc:Bounds x="692" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_05eggsw_di" bpmnElement="Event_0xn5iw6">
+        <dc:Bounds x="432" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0l5j785_di" bpmnElement="Activity_0lomp11">
+        <dc:Bounds x="270" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mzh59c_di" bpmnElement="Activity_1cgjqci">
+        <dc:Bounds x="530" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

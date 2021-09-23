@@ -1,0 +1,76 @@
+version: "3.6"
+services:
+  node-red:
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/Zurich
+    ports:
+      - "3004:1880"
+    volumes:
+      - node-red-data:/data
+  postgres-graphql-engine:
+    image: postgres:12
+    restart: always
+    volumes:
+      - graphql-engine-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=graphql-engine
+      - POSTGRES_PASSWORD=graphql-engine
+  graphql-engine:
+    image: hasura/graphql-engine:v2.0.7
+    ports:
+      - "3003:8080"
+    depends_on:
+      - "postgres-graphql-engine"
+    restart: always
+    environment:
+      PG_DATABASE_URL: postgres://graphql-engine:graphql-engine@postgres-graphql-engine:5432/graphql-engine
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://graphql-engine:graphql-engine@postgres-graphql-engine:5432/graphql-engine
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ADMIN_SECRET: 6fWMT-bY{Kq?Kn7v
+      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
+      REMOTE_SCHEMA_API: "http://api:3001/v1/graphql"
+  postgres-camunda:
+    image: postgres:12
+    restart: always
+    volumes:
+      - camunda-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=camunda
+      - POSTGRES_PASSWORD=camunda
+  camunda:
+    image: camunda/camunda-bpm-platform:latest
+    ports:
+      - "3002:8080"
+    restart: unless-stopped
+    environment:
+      - DB_DRIVER=org.postgresql.Driver
+      - DB_URL=jdbc:postgresql://postgres-camunda:5432/camunda
+      - DB_USERNAME=camunda
+      - DB_PASSWORD=camunda
+      - WAIT_FOR=postgres-camunda:5432
+  api:
+    image: node:14
+    command: npm run start:dev
+    volumes:
+      - ./api:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - "3001:3001"
+  ui:
+    image: node:14
+    command: npm run dev
+    volumes:
+      - ./ui:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - "3000:3000"
+    environment:
+      HOST: 0.0.0.0
+volumes:
+  graphql-engine-db-data:
+  camunda-db-data:
+  node-red-data:

@@ -1,0 +1,7 @@
+version: 3
+endpoint: http://localhost:4000
+admin_secret: 6fWMT-bY{Kq?Kn7v
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: http://localhost:3001
